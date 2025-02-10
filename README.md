@@ -1,30 +1,50 @@
-# vcard-qrcode-gen
+# React + TypeScript + Vite
 
-A python-based vCard QR code generator with web interface support
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## Setup
+Currently, two official plugins are available:
 
-1. Install the python 3.9 from https://www.python.org/
-2. Clone this repository and using the terminal, `cd` to the directory
-3. Run `pip install -r requirements.txt` to install the required dependencies
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## Usage
+## Expanding the ESLint configuration
 
-### CLI
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-1. Make a new directory called "output" (this is where all the QR codes will be generated)
-2. Run `python generator.py` to start the program
-3. Fill in the desired fields (any required fields are labelled with (required))
-4. Once finished, the QR code will be generated in the "output" folder
+- Configure the top-level `parserOptions` property like this:
 
-### Web UI
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
 
-1. `cd` to the directory `VCardMaker`
-2. Run `python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'`
-3. Copy the generated secret key
-4. Create a new file called `.env`
-5. Enter `SECRET_KEY = <secret key>` (replacing <secret key> with the previously generated secret key) into `.env` and save it
-6. Run `python manage.py runserver` to start the web application
-7. Open the web application in the browser at http://localhost:8000
-8. Fill in the desired fields (any required fields are labelled with \*)
-9. Once finished, the QR code will be generated in next webpage (right click > save image, to save the image in your local computer)
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
+
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
+```
