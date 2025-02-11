@@ -1,33 +1,61 @@
+import { SubmitHandler, useForm } from "react-hook-form";
+import { createQR, encodeSVG } from "../lib/qr";
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { createVCard, Data } from "../lib/vcard";
+
+type Inputs = Data;
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [qrCode, setQrCode] = useState<string>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const vcard = createVCard(data);
+    const qr = await createQR(vcard);
+    setQrCode(qr);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <main className="h-screen flex justify-center">
+      <div className="py-16 space-y-8 container max-w-3xl">
+        <h1 className="text-4xl font-bold">QR Business Card Generator</h1>
+        <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+          <input
+            type="text"
+            {...register("firstName")}
+            placeholder="First Name"
+            className="input w-full"
+          />
+          <input
+            type="text"
+            {...register("middleName", {
+              required: false,
+            })}
+            placeholder="Middle Name"
+            className="input w-full"
+          />
+          <input
+            type="text"
+            {...register("lastName")}
+            placeholder="Last Name"
+            className="input w-full"
+          />
+          <input
+            type="text"
+            {...register("organization")}
+            placeholder="Organization"
+            className="input w-full"
+          />
+          <button className="btn" type="submit">
+            Create QR
+          </button>
+        </form>
+        {!!qrCode && <img src={encodeSVG(qrCode)} />}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </main>
   );
 }
 
