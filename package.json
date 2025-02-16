@@ -1,6 +1,7 @@
 {
   "name": "vcard-generator",
   "private": false,
+  "homepage": "https://farellukas.github.io/vcard-generator",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
