@@ -93,6 +93,7 @@ export function createVCard(data: Data): string {
   if (data.otherEmail) vcard.otherEmail = data.otherEmail;
   if (data.firstName) vcard.firstName = data.firstName;
   if (data.formattedName) vcard.formattedName = data.formattedName;
+  if (data.gender) vcard.gender = data.gender;
   if (data.workPhone) vcard.workPhone = data.workPhone;
   if (data.homePhone) vcard.homePhone = data.homePhone;
   if (data.homeFax) vcard.homeFax = data.homeFax;
