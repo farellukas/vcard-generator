@@ -1,5 +1,0 @@
-{
-  "imports": {
-    "@libs/qrcode": "jsr:@libs/qrcode@^2.0.1"
-  }
-}
