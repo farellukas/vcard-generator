@@ -14,7 +14,7 @@ function MainSection() {
   };
 
   return (
-    <div className="space-y-8 w-full">
+    <div className="space-y-4 w-full">
       {/* form */}
       <form
         className="flex flex-col gap-4 flex-1"
@@ -88,7 +88,7 @@ function MainSection() {
 
       {/* qr code */}
       <div className="w-full">
-        {qrCode && <img src={encodeSVG(qrCode)} alt="QR Code" />}
+        {!!qrCode && <img src={encodeSVG(qrCode)} alt="QR Code" />}
       </div>
     </div>
   );
