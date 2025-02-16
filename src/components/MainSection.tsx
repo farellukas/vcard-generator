@@ -1,17 +1,34 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { createVCard, Data } from "../../lib/vcard";
 import { createQR, encodeSVG } from "../../lib/qr";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { isEqual } from "lodash";
 
 function MainSection() {
   const [qrCode, setQrCode] = useState<string | null>(null);
-  const { register, handleSubmit } = useForm<Data>();
+  const [submitted, setSubmitted] = useState<Partial<Data> | null>(null);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Data>();
   const onSubmit: SubmitHandler<Data> = async (data) => {
+    // set submitted data
+    setSubmitted(data);
+
+    // create vcard
     const vcard = createVCard(data);
-    console.log(vcard);
     const qr = await createQR(vcard);
     setQrCode(qr);
   };
+  const formValues = watch();
+  useEffect(() => {
+    // reset QR code
+    if (!isEqual(submitted, formValues)) {
+      setQrCode(null);
+    }
+  }, [formValues, submitted]);
 
   return (
     <div className="space-y-4 w-full">
@@ -20,12 +37,26 @@ function MainSection() {
         className="flex flex-col gap-4 flex-1"
         onSubmit={handleSubmit(onSubmit)}
       >
+        {/* errors */}
+        {errors.firstName && (
+          <div role="alert" className="alert alert-error alert-soft">
+            <span>Error: {errors.firstName.message}</span>
+          </div>
+        )}
+        {errors.url && (
+          <div role="alert" className="alert alert-error alert-soft">
+            <span>Error: {errors.url.message}</span>
+          </div>
+        )}
+
         {/* first name */}
         <label className="floating-label">
           <span>First Name</span>
           <input
             className="input w-full"
-            {...register("firstName")}
+            {...register("firstName", {
+              required: "First Name is required",
+            })}
             placeholder="First Name"
           />
         </label>
@@ -40,16 +71,6 @@ function MainSection() {
           />
         </label>
 
-        {/* email */}
-        <label className="floating-label">
-          <span>Email</span>
-          <input
-            className="input w-full"
-            {...register("email")}
-            placeholder="Email"
-          />
-        </label>
-
         {/* phone */}
         <label className="floating-label">
           <span>Phone</span>
@@ -57,6 +78,16 @@ function MainSection() {
             className="input w-full"
             {...register("workPhone")}
             placeholder="Phone"
+          />
+        </label>
+
+        {/* email */}
+        <label className="floating-label">
+          <span>Email</span>
+          <input
+            className="input w-full"
+            {...register("workEmail")}
+            placeholder="Email"
           />
         </label>
 
@@ -75,7 +106,12 @@ function MainSection() {
           <span>Website</span>
           <input
             className="input w-full"
-            {...register("url")}
+            {...register("url", {
+              pattern: {
+                value: /^(https?):\/\/[^\s/$.?#].[^\s]*$/i,
+                message: "URL must start with http:// or https://",
+              },
+            })}
             placeholder="Website"
           />
         </label>
