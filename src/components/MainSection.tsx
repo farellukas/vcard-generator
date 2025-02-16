@@ -19,6 +19,7 @@ function MainSection() {
 
     // create vcard
     const vcard = createVCard(data);
+    console.log(vcard);
     const qr = await createQR(vcard);
     setQrCode(qr);
   };

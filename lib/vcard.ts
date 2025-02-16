@@ -84,30 +84,39 @@ interface Address {
 export function createVCard(data: Data): string {
   const vcard = vCardFactory();
 
-  if (data.firstName) {
-    vcard.firstName = data.firstName;
-  }
-  if (data.middleName) {
-    vcard.middleName = data.middleName;
-  }
-  if (data.lastName) {
-    vcard.lastName = data.lastName;
-  }
-  if (data.workPhone) {
-    vcard.workPhone = data.workPhone;
-  }
-  if (data.email) {
-    vcard.email = data.email;
-  }
-  if (data.organization) {
-    vcard.organization = data.organization;
-  }
-  if (data.url) {
-    vcard.url = data.url;
-  }
-  if (data.note) {
-    vcard.note = data.note;
-  }
+  if (data.birthday) vcard.birthday = data.birthday;
+  if (data.anniversary) vcard.anniversary = data.anniversary;
+  if (data.cellPhone) vcard.cellPhone = data.cellPhone;
+  if (data.pagerPhone) vcard.pagerPhone = data.pagerPhone;
+  if (data.email) vcard.email = data.email;
+  if (data.workEmail) vcard.workEmail = data.workEmail;
+  if (data.otherEmail) vcard.otherEmail = data.otherEmail;
+  if (data.firstName) vcard.firstName = data.firstName;
+  if (data.formattedName) vcard.formattedName = data.formattedName;
+  if (data.workPhone) vcard.workPhone = data.workPhone;
+  if (data.homePhone) vcard.homePhone = data.homePhone;
+  if (data.homeFax) vcard.homeFax = data.homeFax;
+  if (data.lastName) vcard.lastName = data.lastName;
+  if (data.logo) vcard.logo = data.logo;
+  if (data.middleName) vcard.middleName = data.middleName;
+  if (data.namePrefix) vcard.namePrefix = data.namePrefix;
+  if (data.nameSuffix) vcard.nameSuffix = data.nameSuffix;
+  if (data.nickname) vcard.nickname = data.nickname;
+  if (data.note) vcard.note = data.note;
+  if (data.organization) vcard.organization = data.organization;
+  if (data.isOrganization) vcard.isOrganization = data.isOrganization;
+  if (data.photo) vcard.photo = data.photo;
+  if (data.role) vcard.role = data.role;
+  if (data.socialUrls) vcard.socialUrls = data.socialUrls;
+  if (data.source) vcard.source = data.source;
+  if (data.title) vcard.title = data.title;
+  if (data.url) vcard.url = data.url;
+  if (data.workUrl) vcard.workUrl = data.workUrl;
+  if (data.homeAddress) vcard.homeAddress = data.homeAddress;
+  if (data.workAddress) vcard.workAddress = data.workAddress;
+  if (data.workFax) vcard.workFax = data.workFax;
+  if (data.otherPhone) vcard.otherPhone = data.otherPhone;
+  if (data.version) vcard.version = data.version;
 
   return vcard.getFormattedString();
 }
